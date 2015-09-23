@@ -7,11 +7,22 @@
 //
 
 import UIKit
+import MapKit
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let coords = CLLocationCoordinate2DMake(55.7522200,37.6155600)
+
+        
+        ApiClient.defaultClient.fetchPhotosForCoordinates(coords, page: 1, completionHandler: {
+            photos, error in
+            
+            println(photos)
+            
+        })
         // Do any additional setup after loading the view, typically from a nib.
     }
 

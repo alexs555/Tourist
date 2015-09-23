@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Photo.swift">
+   </FileRef>
+   <FileRef
+      location = "group:Pin.swift">
+   </FileRef>
+   <FileRef
       location = "group:Tourist.xcodeproj">
    </FileRef>
    <FileRef
