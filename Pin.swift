@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 
+@objc(Pin)
 class Pin: NSManagedObject {
 
     @NSManaged var latitude: NSNumber

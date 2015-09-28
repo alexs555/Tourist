@@ -14,6 +14,33 @@ class CoreDataManager {
     
     static let sharedInstance = CoreDataManager()
     
+    
+    func save() {
+        
+        if (!self.privateContext!.hasChanges && !self.mainContex!.hasChanges) {
+            return
+        }
+        
+        CoreDataManager.sharedInstance.mainContex?.performBlockAndWait( {
+            
+          var error: NSError?
+            if (!self.mainContex!.save(&error)) {
+              println("Unresolved error in saving main context\(error)")
+            }
+            
+            self.privateContext?.performBlock({
+                
+                var error: NSError?
+                if (!self.privateContext!.save(&error)) {
+                    println("Unresolved error in saving private context\(error)")
+                }
+                
+            })
+            
+        })
+    }
+    
+    
     lazy var privateContext: NSManagedObjectContext? = {
         
          var context = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)

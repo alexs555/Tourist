@@ -8,7 +8,9 @@
 
 import Foundation
 import CoreData
+import SwiftyJSON
 
+@objc(Photo)
 class Photo: NSManagedObject {
 
     @NSManaged var id: String
@@ -27,13 +29,13 @@ class Photo: NSManagedObject {
         }
     }
     
-    func setWithData(dictionary: [NSObject: AnyObject]) {
+    func setWithData(dictionary: JSON) {
         
-        id = dictionary["id"] as! String
-        title = dictionary["title"] as! String
-        server = dictionary["server"] as! String
-        secret = dictionary["secret"] as! String
-        farm = dictionary["farm"] as! Int
+        id = dictionary["id"].stringValue
+        title = dictionary["title"].stringValue
+        server = dictionary["server"].stringValue
+        secret = dictionary["secret"].stringValue
+        farm = dictionary["farm"].intValue
         filename = "\(id)_\(secret).jpg"
                 
     }

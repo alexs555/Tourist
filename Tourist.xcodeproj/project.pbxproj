@@ -23,6 +23,7 @@
 		99B83E9B1BB1F98B00572431 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B83E9A1BB1F98B00572431 /* ApiClient.swift */; };
 		99B83E9E1BB34C4000572431 /* FlickrPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B83E9D1BB34C4000572431 /* FlickrPhoto.swift */; };
 		99B83EA01BB359E100572431 /* ImagesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B83E9F1BB359E100572431 /* ImagesStorage.swift */; };
+		99B83EA31BB7506D00572431 /* PhotosDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B83EA21BB7506D00572431 /* PhotosDataProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		99B83E9A1BB1F98B00572431 /* ApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApiClient.swift; path = Networking/ApiClient.swift; sourceTree = "<group>"; };
 		99B83E9D1BB34C4000572431 /* FlickrPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FlickrPhoto.swift; path = Models/FlickrPhoto.swift; sourceTree = "<group>"; };
 		99B83E9F1BB359E100572431 /* ImagesStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImagesStorage.swift; path = Models/ImagesStorage.swift; sourceTree = "<group>"; };
+		99B83EA21BB7506D00572431 /* PhotosDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PhotosDataProvider.swift; path = Mapping/PhotosDataProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +194,7 @@
 		99B83EA11BB35C7100572431 /* Mapping */ = {
 			isa = PBXGroup;
 			children = (
+				99B83EA21BB7506D00572431 /* PhotosDataProvider.swift */,
 			);
 			name = Mapping;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				991B6CF71B9C8219008B4719 /* ViewController.swift in Sources */,
 				99B83E991BB1EE4E00572431 /* FlickrAPI.swift in Sources */,
 				991B6CF51B9C8219008B4719 /* Tourist.xcdatamodeld in Sources */,
+				99B83EA31BB7506D00572431 /* PhotosDataProvider.swift in Sources */,
 				99B83E9B1BB1F98B00572431 /* ApiClient.swift in Sources */,
 				99B83E9E1BB34C4000572431 /* FlickrPhoto.swift in Sources */,
 				991B6D171BA22506008B4719 /* CoreDataManager.swift in Sources */,
