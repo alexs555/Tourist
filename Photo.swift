@@ -18,13 +18,13 @@ class Photo: NSManagedObject {
     @NSManaged var server: String
     @NSManaged var secret: String
     @NSManaged var filename: String
-    @NSManaged var stringUrl: String
     @NSManaged var farm: NSNumber
-    @NSManaged var pin: Photo
+    @NSManaged var pin: Pin
     
     var url:NSURL {
         
         get {
+          
              return NSURL(string: "https://farm\(farm).staticflickr.com/\(server)/\(filename)")!
         }
     }
@@ -37,7 +37,7 @@ class Photo: NSManagedObject {
         secret = dictionary["secret"].stringValue
         farm = dictionary["farm"].intValue
         filename = "\(id)_\(secret).jpg"
-                
+        
     }
 
 }

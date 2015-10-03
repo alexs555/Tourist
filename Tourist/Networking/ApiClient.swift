@@ -15,16 +15,17 @@ class ApiClient {
     
     static let defaultClient = ApiClient()
     
-    
     func fetchPhotosForCoordinates(
         coordinates:CLLocationCoordinate2D,
+        pin:Pin,
         page:Int,
-        completionHandler: (Array<FlickrPhoto>, NSError?) -> Void) {
+        completionHandler: (Array<Photo>, NSError?) -> Void) {
         
              Alamofire.request(FlickrRouter.SearchPhotos(coordinates, page)).responseJSON() { (request, response, photosJSON, error) in
                 
                 println("json \(photosJSON)")
-                PhotosDataPovider.parse(photosJSON)
+                var photos = PhotosDataPovider.parse(photosJSON,pin:pin)
+                completionHandler(photos, error)
                 
             }
             

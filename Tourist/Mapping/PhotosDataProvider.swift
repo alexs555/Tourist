@@ -14,12 +14,10 @@ import SwiftyJSON
 
 class PhotosDataPovider {
     
-    static func parse(json:AnyObject?)->Array<Photo> {
+    static func parse(json:AnyObject?, pin:Pin) -> Array<Photo> {
         
         var photosArray = Array<Photo>()
         
-        let workerContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
-        workerContext.parentContext = CoreDataManager.sharedInstance.mainContex
         
         if (json != nil) {
             
@@ -29,26 +27,25 @@ class PhotosDataPovider {
                 
                 for photo in results.array! {
                     
-                    let newPhoto = NSEntityDescription.insertNewObjectForEntityForName("Photo", inManagedObjectContext: workerContext) as! Photo
+                    let newPhoto = NSEntityDescription.insertNewObjectForEntityForName("Photo", inManagedObjectContext: CoreDataManager.sharedInstance.mainContex!) as! Photo
                     newPhoto.setWithData(photo)
+                    
+                    var error : NSError?
+                    if let pin = CoreDataManager.sharedInstance.mainContex!.existingObjectWithID(pin.objectID, error: &error) as? Pin {
+                        newPhoto.pin = pin
+                    }
+                
                     photosArray.append(newPhoto)
+                
                 }
+                pin.photos = NSSet(array: photosArray)
             }
         }
 
-        self.save(workerContext)
-        println("photos - \(photosArray)")
+        CoreDataManager.sharedInstance.save()
+       // println("photos - \(photosArray)")
         return photosArray
         
     }
     
-     static func save(context: NSManagedObjectContext) {
-        
-        var error: NSError?
-        if (!context.save(&error)) {
-            println("Unresolved error in saving main context\(error)")
-        } else {
-            CoreDataManager.sharedInstance.save()
-        }
-    }
 }
