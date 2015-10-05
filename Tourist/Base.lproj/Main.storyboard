@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
-        <!--Map View Controller-->
+        <!--Locations-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="MapViewController" customModule="Tourist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Locations" id="vXZ-lx-hvc" customClass="MapViewController" customModule="Tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -19,19 +19,39 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ztO-Ds-bTY">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aiF-8o-Wj2">
+                                <rect key="frame" x="0.0" y="600" width="600" height="44"/>
+                                <color key="backgroundColor" red="1" green="0.099796136110000003" blue="0.097252818340000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="enk-4X-mXD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Tap pins to delete">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="aiF-8o-Wj2" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="LO0-v0-bLF"/>
                             <constraint firstItem="ztO-Ds-bTY" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="Xli-OD-2CN"/>
+                            <constraint firstAttribute="trailing" secondItem="aiF-8o-Wj2" secondAttribute="trailing" id="Z5w-MF-rT9"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="ztO-Ds-bTY" secondAttribute="bottom" id="muW-8R-8G9"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="aiF-8o-Wj2" secondAttribute="bottom" constant="-44" id="rht-NH-koV"/>
                             <constraint firstItem="ztO-Ds-bTY" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="tK2-iR-jMf"/>
                             <constraint firstAttribute="trailing" secondItem="ztO-Ds-bTY" secondAttribute="trailing" id="thV-Ye-Pyl"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="gk4-hq-mGO">
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="7uU-jS-g6P"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="7uU-jS-g6P">
+                            <connections>
+                                <action selector="editPressed:" destination="vXZ-lx-hvc" id="HfC-gd-eAv"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="buttonBottomconstraint" destination="rht-NH-koV" id="n9A-Dw-ist"/>
                         <outlet property="mapView" destination="ztO-Ds-bTY" id="iQF-n4-deK"/>
                         <segue destination="Evr-rs-5EG" kind="show" identifier="showPhotos" id="IRe-gz-Hc8"/>
                     </connections>
@@ -40,10 +60,10 @@
             </objects>
             <point key="canvasLocation" x="1073" y="-505"/>
         </scene>
-        <!--Photos View Controller-->
+        <!--Photos-->
         <scene sceneID="8gN-P0-GYq">
             <objects>
-                <viewController id="Evr-rs-5EG" customClass="PhotosViewController" customModule="Tourist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Photos" id="Evr-rs-5EG" customClass="PhotosViewController" customModule="Tourist" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Y2T-vq-b8a"/>
                         <viewControllerLayoutGuide type="bottom" id="P4y-v4-Cd9"/>
@@ -59,8 +79,8 @@
                                 </constraints>
                             </mapView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8CO-Zo-DO8">
-                                <rect key="frame" x="0.0" y="164" width="600" height="436"/>
-                                <color key="backgroundColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                <rect key="frame" x="0.0" y="164" width="600" height="392"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="kr3-bE-eA4">
                                     <size key="itemSize" width="210" height="172"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -103,19 +123,42 @@
                                     <outlet property="delegate" destination="Evr-rs-5EG" id="hOE-NC-s3H"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xBu-qw-kKe">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="oY7-VR-JOb"/>
+                                </constraints>
+                                <state key="normal" title="New Collection">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="bottomButtonPressed:" destination="Evr-rs-5EG" eventType="touchUpInside" id="kdj-D3-Ygr"/>
+                                    <action selector="loadNewCollection:" destination="Evr-rs-5EG" eventType="touchUpInside" id="YIL-Tt-BUD"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="xBu-qw-kKe" firstAttribute="leading" secondItem="NVI-Qk-yJf" secondAttribute="leading" id="2ok-N1-Ryp"/>
                             <constraint firstItem="8CO-Zo-DO8" firstAttribute="top" secondItem="icX-Ln-Tja" secondAttribute="bottom" id="JJp-wb-poS"/>
+                            <constraint firstItem="P4y-v4-Cd9" firstAttribute="top" secondItem="xBu-qw-kKe" secondAttribute="bottom" id="NPL-Bh-gm2"/>
+                            <constraint firstItem="xBu-qw-kKe" firstAttribute="top" secondItem="8CO-Zo-DO8" secondAttribute="bottom" id="Rsc-vY-Qo0"/>
                             <constraint firstAttribute="trailing" secondItem="icX-Ln-Tja" secondAttribute="trailing" id="aRK-nL-dYA"/>
                             <constraint firstItem="P4y-v4-Cd9" firstAttribute="top" secondItem="8CO-Zo-DO8" secondAttribute="bottom" id="aTh-tm-pP3"/>
                             <constraint firstAttribute="trailing" secondItem="8CO-Zo-DO8" secondAttribute="trailing" id="azy-5s-YhN"/>
                             <constraint firstItem="icX-Ln-Tja" firstAttribute="leading" secondItem="NVI-Qk-yJf" secondAttribute="leading" id="of3-6h-HdK"/>
+                            <constraint firstAttribute="trailing" secondItem="xBu-qw-kKe" secondAttribute="trailing" id="t3Z-2n-eUs"/>
                             <constraint firstItem="icX-Ln-Tja" firstAttribute="top" secondItem="Y2T-vq-b8a" secondAttribute="bottom" id="tTQ-2P-b4x"/>
                             <constraint firstItem="8CO-Zo-DO8" firstAttribute="leading" secondItem="NVI-Qk-yJf" secondAttribute="leading" id="wCz-S7-yzf"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="aTh-tm-pP3"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
+                        <outlet property="bottomBar" destination="xBu-qw-kKe" id="ukd-wM-tee"/>
                         <outlet property="collectionView" destination="8CO-Zo-DO8" id="HAG-2m-wzf"/>
                         <outlet property="mapView" destination="icX-Ln-Tja" id="MxB-Or-wVA"/>
                     </connections>

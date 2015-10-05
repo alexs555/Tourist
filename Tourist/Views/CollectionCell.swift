@@ -19,6 +19,8 @@ class CollectionCell: UICollectionViewCell {
         
         activityIndicator.hidden = false
         activityIndicator.startAnimating()
+        contentView.bringSubviewToFront(activityIndicator)
+        selected = false
         
     }
     
@@ -30,9 +32,11 @@ class CollectionCell: UICollectionViewCell {
             if newValue {
                 super.selected = true
                 photoImageView.alpha = 0.5
+                photoImageView.layer.backgroundColor = UIColor.whiteColor().CGColor!
             } else if newValue == false {
                 super.selected = false
                 photoImageView.alpha = 1.0
+                photoImageView.layer.backgroundColor =  UIColor.clearColor().CGColor!
             }
         }
     }

@@ -39,5 +39,15 @@ class Photo: NSManagedObject {
         filename = "\(id)_\(secret).jpg"
         
     }
+    
+    override func prepareForDeletion() {
+        super.prepareForDeletion()
+        
+        let path = ImagesStorage.getPathForFilename(filename)
+        
+        if (NSFileManager.defaultManager().isDeletableFileAtPath(path)) {
+            NSFileManager.defaultManager().removeItemAtPath(path, error: nil)
+        }
+    }
 
 }

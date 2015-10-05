@@ -13,10 +13,12 @@ import CoreData
 
 class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
+    @IBOutlet weak var buttonBottomconstraint: NSLayoutConstraint!
     var locationManager: CLLocationManager!
     @IBOutlet weak var mapView: MKMapView!
     var coords:CLLocationCoordinate2D!
     var selectedPin: Pin?
+    var editingMode = false
     
     func createLocationManager () {
         locationManager = CLLocationManager()
@@ -68,8 +70,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         for pin in pins {
             
-            var annotation =  MKPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2DMake(pin.latitude.doubleValue, pin.longitude.doubleValue)
+            var annotation =  PinAnnotation()
+            annotation.pin = pin
             mapView.addAnnotation(annotation)
         }
     }
@@ -90,12 +92,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         var touchPoint = recognizer.locationInView(mapView)
         var touchMapCoordinate = mapView.convertPoint(touchPoint, toCoordinateFromView: mapView)
         
-        var annotation = MKPointAnnotation()
+        selectedPin = savePin(touchMapCoordinate)
         
-        
+        var annotation = PinAnnotation()
+        annotation.pin = selectedPin
         annotation.coordinate = touchMapCoordinate
         mapView.addAnnotation(annotation)
-        selectedPin = savePin(touchMapCoordinate)
+        
+ 
         
     }
     
@@ -118,12 +122,19 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
         
         mapView.deselectAnnotation(view.annotation, animated: false)
-        if selectedPin != nil {
-          performSegueWithIdentifier("showPhotos", sender: nil)
+        
+       if let pinAnnotation = view.annotation as? PinAnnotation {
+            
+            selectedPin = pinAnnotation.pin
+            if (editingMode) {
+                mapView.removeAnnotation(pinAnnotation)
+                removePin(selectedPin!)
+            } else {
+                performSegueWithIdentifier("showPhotos", sender: nil)
+            }
         }
-       
+
     }
-    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     
@@ -146,6 +157,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         return pin
         
     }
+    
+    func removePin(pin: Pin) {
+        
+        for photo in pin.photos {
+            CoreDataManager.sharedInstance.mainContex!.deleteObject(photo as! NSManagedObject)
+        }
+        CoreDataManager.sharedInstance.mainContex!.deleteObject(pin as! NSManagedObject)
+        CoreDataManager.sharedInstance.save()
+    }
 
+    @IBAction func editPressed(sender: AnyObject) {
+        
+        editingMode = !editingMode
+        buttonBottomconstraint.constant = editingMode ? 0 : -44
+        view.layoutIfNeeded()
+    }
 }
 

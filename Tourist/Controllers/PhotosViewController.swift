@@ -17,9 +17,44 @@ class PhotosViewController: UIViewController, NSFetchedResultsControllerDelegate
     @IBOutlet weak var collectionView: UICollectionView!
     
     var selectedPin: Pin?
-    var photos: Array<Photo>?
+    var photos : Array<Photo>?
     var imagesStore: ImagesStorage!
     var itemSize:CGSize!
+    var currentPage = 1
+    var selectedPhotos = NSMutableArray()
+    var selectedIndexPaths = NSMutableArray()
+    @IBOutlet weak var bottomBar: UIButton!
+    
+    
+    @IBAction func bottomButtonPressed(sender: UIButton) {
+        
+        if (sender.titleLabel?.text == "New Collection") {
+            ++currentPage
+            loadData()
+        } else {
+            
+         
+            collectionView.performBatchUpdates( {
+                
+                for photo in self.selectedPhotos {
+                    CoreDataManager.sharedInstance.mainContex!.deleteObject(photo as! NSManagedObject)
+                }
+                
+                CoreDataManager.sharedInstance.save()
+                self.collectionView.deleteItemsAtIndexPaths(self.selectedIndexPaths as [AnyObject])
+                
+                
+                }, completion: nil)
+            
+            
+            selectedPhotos.removeAllObjects()
+            selectedIndexPaths.removeAllObjects()
+            
+            updateButton()
+            
+        }
+      
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,17 +63,18 @@ class PhotosViewController: UIViewController, NSFetchedResultsControllerDelegate
         fetchedResultsController.performFetch(&error)
         
         photos = fetchedResultsController.fetchedObjects as? Array<Photo>
-      //  println("objects \(photos)")
-        collectionView.reloadData()
-      
+    
+        collectionView.allowsMultipleSelection = true
         
         imagesStore = ImagesStorage()
         configureMapView()
-        loadData()
+        
+        if (selectedPin?.photos.count == 0) {
+         loadData()
+        }
         
         let width = (view.bounds.size.width / 3) - 10
         itemSize = CGSizeMake(width, width)
-        // Do any additional setup after loading the view.
     }
 
     func configureMapView() {
@@ -55,7 +91,7 @@ class PhotosViewController: UIViewController, NSFetchedResultsControllerDelegate
         
         var coords = CLLocationCoordinate2DMake(selectedPin!.latitude.doubleValue, selectedPin!.longitude.doubleValue)
     
-        ApiClient.defaultClient.fetchPhotosForCoordinates(coords,pin: selectedPin!, page: 1, completionHandler: {
+        ApiClient.defaultClient.fetchPhotosForPin(selectedPin!, page: currentPage, completionHandler: {
             newPhotos, error in
             
             self.collectionView.reloadData()
@@ -69,7 +105,6 @@ class PhotosViewController: UIViewController, NSFetchedResultsControllerDelegate
         
         var photosRequest = NSFetchRequest(entityName: "Photo")
         
-       
         photosRequest.predicate = self.createPredicate()
         
         let primarySortDescriptor = NSSortDescriptor(key: "id", ascending: true)
@@ -95,7 +130,19 @@ class PhotosViewController: UIViewController, NSFetchedResultsControllerDelegate
     }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        photos = controller.fetchedObjects as? Array<Photo>
         collectionView.reloadData()
+    }
+    
+    func updateButton() {
+        
+        if selectedPhotos.count == 0 {
+            
+            bottomBar.setTitle("New Collection", forState: UIControlState.Normal)
+        }
+        else {
+            bottomBar.setTitle("Remove Selected Pictures", forState: UIControlState.Normal)
+        }
     }
     
 
@@ -109,7 +156,6 @@ extension PhotosViewController : UICollectionViewDataSource {
             let currentSection: AnyObject = sections[section]
             return currentSection.numberOfObjects
         }
-        
         return 0
         
     }
@@ -118,7 +164,6 @@ extension PhotosViewController : UICollectionViewDataSource {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as! CollectionCell
         let photo = fetchedResultsController.objectAtIndexPath(indexPath) as! Photo  //photos![indexPath.item]
-        println("photo - \(photo.url.absoluteString)")
         
         imagesStore.imageWithUrl(photo.url, filename: photo.filename, completion: { image in
             cell.setImage(image)
@@ -132,16 +177,18 @@ extension PhotosViewController : UICollectionViewDelegate {
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
-       /* selectedPhotos.addObject(photos![indexPath.row])
+        let photo = fetchedResultsController.objectAtIndexPath(indexPath) as! Photo
+        selectedPhotos.addObject(photo)
         selectedIndexPaths.addObject(indexPath)
-        updateTollbarButton()*/
+        updateButton()
     }
     
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         
-       /* selectedPhotos.removeObject(photos![indexPath.row])
+        selectedPhotos.removeObject(fetchedResultsController.objectAtIndexPath(indexPath))
         selectedIndexPaths.removeObject(indexPath)
-        updateTollbarButton()*/
+        updateButton()
+
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
