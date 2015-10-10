@@ -70,7 +70,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         for pin in pins {
             
-            var annotation =  PinAnnotation()
+            var annotation =  PinAnnotation(coordinate: CLLocationCoordinate2DMake(pin.latitude.doubleValue, pin.longitude.doubleValue))
             annotation.pin = pin
             mapView.addAnnotation(annotation)
         }
@@ -94,7 +94,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         selectedPin = savePin(touchMapCoordinate)
         
-        var annotation = PinAnnotation()
+        var annotation = PinAnnotation(coordinate: CLLocationCoordinate2DMake(selectedPin!.latitude.doubleValue, selectedPin!.longitude.doubleValue))
         annotation.pin = selectedPin
         annotation.coordinate = touchMapCoordinate
         mapView.addAnnotation(annotation)
@@ -152,7 +152,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         pin.latitude = coordinates.latitude
         pin.longitude = coordinates.longitude
         
-        var objId = pin.objectID
         CoreDataManager.sharedInstance.save()
         return pin
         

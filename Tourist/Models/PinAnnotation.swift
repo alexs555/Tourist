@@ -11,7 +11,7 @@ import MapKit
 
 class PinAnnotation: NSObject, MKAnnotation {
    
-    var coordinate: CLLocationCoordinate2D {
+    /*var coordinate: CLLocationCoordinate2D {
         get {
             return CLLocationCoordinate2DMake(pin.latitude.doubleValue, pin.longitude.doubleValue)
         }
@@ -19,9 +19,22 @@ class PinAnnotation: NSObject, MKAnnotation {
             pin.latitude = newValue.latitude
             pin.longitude = newValue.longitude
         }
+    }*/
+    init (coordinate:CLLocationCoordinate2D) {
+        self.coordinate = coordinate
     }
     
+    var coordinate: CLLocationCoordinate2D
     var title: String?
     var subtitle: String?
-    var pin:Pin!
+    private var _pin: Pin? = nil
+    var pin:Pin! {
+        get {
+            return self._pin
+        }
+        set {
+            self._pin = newValue
+            coordinate = CLLocationCoordinate2DMake(self._pin!.latitude.doubleValue, self._pin!.longitude.doubleValue)
+        }
+    }
 }

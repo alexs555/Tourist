@@ -17,7 +17,7 @@ class CoreDataManager {
     
     func save() {
         
-        if (!self.privateContext!.hasChanges && !self.mainContex!.hasChanges) {
+        if (!self.mainContex!.hasChanges) {
             return
         }
         
@@ -28,32 +28,15 @@ class CoreDataManager {
               println("Unresolved error in saving main context\(error)")
             }
             
-            self.privateContext?.performBlock({
-                
-                var error: NSError?
-                if (!self.privateContext!.save(&error)) {
-                    println("Unresolved error in saving private context\(error)")
-                }
-                
-            })
-            
         })
     }
     
-    
-    lazy var privateContext: NSManagedObjectContext? = {
-        
-         var context = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType)
-         context.persistentStoreCoordinator = self.storeCoordinator
-         return context
-        
-    }()
     
     //main context - all operations ui main thread
     lazy var mainContex: NSManagedObjectContext? = {
         
           var context = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
-          context.parentContext = self.privateContext
+          context.persistentStoreCoordinator = self.storeCoordinator
           return context
         
     }()

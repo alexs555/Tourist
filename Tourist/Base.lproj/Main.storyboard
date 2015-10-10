@@ -132,8 +132,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="bottomButtonPressed:" destination="Evr-rs-5EG" eventType="touchUpInside" id="kdj-D3-Ygr"/>
-                                    <action selector="loadNewCollection:" destination="Evr-rs-5EG" eventType="touchUpInside" id="YIL-Tt-BUD"/>
+                                    <action selector="bottomButtonPressed:" destination="Evr-rs-5EG" eventType="touchUpInside" id="RDK-iS-BD0"/>
                                 </connections>
                             </button>
                         </subviews>
